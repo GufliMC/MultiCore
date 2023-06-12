@@ -1,0 +1,6 @@
+rootProject.name = 'MultiCore'
+
+include 'api'
+include 'common'
+include 'multipaper'
+

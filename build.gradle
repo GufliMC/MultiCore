@@ -1,0 +1,34 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
+    id 'pl.allegro.tech.build.axion-release' version '1.13.6'
+}
+
+group 'com.guflimc.multicore'
+version = scmVersion.version
+
+def javadocProjects = [project(':api'), project(':multipaper')]
+ext.set("javadocProjects", javadocProjects)
+
+def publishProjects = [project(':api'), project(':multipaper'), project(':common')]
+ext.set("publishProjects", publishProjects)
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.jorisg.com/snapshots' }
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+        maven { url 'https://mvn.lumine.io/repository/maven-public/' }
+        maven { url 'https://jitpack.io' }
+    }
+
+    dependencies {
+
+    }
+}
+
+apply from: 'https://guflimc.github.io/scripts/gradle/subprojects-default.gradle'
+apply from: 'https://guflimc.github.io/scripts/gradle/subprojects-javadoc.gradle'
+apply from: 'https://guflimc.github.io/scripts/gradle/subprojects-publish.gradle'

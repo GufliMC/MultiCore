@@ -1,0 +1,9 @@
+name: Gradle test
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    uses: GufliOfficial/.github/.github/workflows/java-gradle-test.yml@main

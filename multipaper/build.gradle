@@ -1,0 +1,17 @@
+plugins {
+}
+
+repositories {
+    maven { url "https://repo.clojars.org/" }
+}
+
+dependencies {
+    api project(':api')
+    implementation project(':common')
+
+    // provided at runtime
+    compileOnly "io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT"
+
+    // shade
+    api "com.github.puregero:multilib:1.1.12"
+}
