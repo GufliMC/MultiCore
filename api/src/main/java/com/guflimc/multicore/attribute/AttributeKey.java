@@ -8,7 +8,7 @@ public class AttributeKey<T extends Serializable> implements Serializable {
     private final String id;
     private final Class<T> type;
 
-    private AttributeKey(String id, Class<T> type) {
+    public AttributeKey(String id, Class<T> type) {
         this.id = id;
         this.type = type;
     }

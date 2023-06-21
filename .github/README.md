@@ -50,7 +50,7 @@ multicore.subscribe(CoolPacket.class, packet -> {
 });
 
 // sync data across servers
-AttributeKey<Integer> serverLevel = new Attribute("SERVER_LEVEL", String.class);
+AttributeKey<Integer> serverLevel = new AttributeKey("SERVER_LEVEL", Integer.class);
 multicore.storage().setAttribute(attribute, 69);
 
 // get attribute
