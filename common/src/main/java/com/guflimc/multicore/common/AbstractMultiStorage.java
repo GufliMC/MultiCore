@@ -31,11 +31,13 @@ public abstract class AbstractMultiStorage implements MultiStorage {
     @Override
     public <T extends Serializable> void setAttribute(@NotNull AttributeKey<T> key, @NotNull T value) {
         update(key, value);
+        sync(key, value);
     }
 
     @Override
     public <T extends Serializable> void removeAttribute(@NotNull AttributeKey<T> key) {
         update(key, null);
+        sync(key, null);
     }
 
     protected abstract <T extends Serializable> void sync(@NotNull AttributeKey<T> key, @Nullable T value);

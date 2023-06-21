@@ -12,6 +12,8 @@ import com.guflimc.multicore.packet.Packet;
 import com.guflimc.multicore.packet.RequestPacket;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -24,6 +26,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public abstract class AbstractMultiCore implements MultiCore {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(AbstractMultiCore.class);
 
     //
 
@@ -46,8 +50,10 @@ public abstract class AbstractMultiCore implements MultiCore {
         // update storage values
         subscribe(PacketSyncAttribute.class, packet -> {
             if (packet.playerId() == null) {
+                LOGGER.debug("Received server attribute sync with attribute {}", packet.key().id());
                 storage.update(packet.key(), packet.value());
             } else {
+                LOGGER.debug("Received attribute sync for player {} with attribute {}", packet.playerId(), packet.key().id());
                 storage(packet.playerId()).update(packet.key(), packet.value());
             }
         });
@@ -68,6 +74,7 @@ public abstract class AbstractMultiCore implements MultiCore {
 
     @Override
     public void send(@NotNull Packet packet) {
+        LOGGER.debug("Sending packet: {}", packet.getClass().getName());
         send(SerializableAdapter.adapt(packet));
     }
 
@@ -111,6 +118,7 @@ public abstract class AbstractMultiCore implements MultiCore {
             return players.get(playerId);
         }
 
+        LOGGER.debug("Creating storage for player: {}", playerId);
         AbstractMultiStorage storage = new AbstractMultiStorage() {
             @Override
             protected <T extends Serializable> void sync(@NotNull AttributeKey<T> key, @Nullable T value) {
@@ -123,6 +131,7 @@ public abstract class AbstractMultiCore implements MultiCore {
     }
 
     protected void invalidate(@NotNull UUID playerId) {
+        LOGGER.debug("Invalidating storage for player: {}", playerId);
         players.remove(playerId);
     }
 
@@ -130,6 +139,7 @@ public abstract class AbstractMultiCore implements MultiCore {
 
     protected void recieve(byte @NotNull [] message) {
         Packet packet = (Packet) SerializableAdapter.adapt(message);
+        LOGGER.debug("Received packet: {}", packet.getClass().getName());
 
         if (packet instanceof PacketSession<?> sp) {
             if (callbacks.containsKey(sp.sessionId())) {

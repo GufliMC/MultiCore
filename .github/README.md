@@ -32,7 +32,10 @@ An instance of MultiCore will only communicate with instances of multicore on ot
 
 ```java
 // initialize
-MultiPaperCore multicore = MultiPaperCore.of(JavaPlugin);
+@Override
+public void onEnable(){
+    MultiPaperCore multicore = MultiPaperCore.of(this);
+}
 
 // create a packet (all fields must be serializable
 public class CoolPacket extends Packet {
